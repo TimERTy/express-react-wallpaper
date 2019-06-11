@@ -7,6 +7,9 @@ jobs:
             - image: "circleci/node:10"
         steps:
             - checkout
+            - run: 
+                name: "Setup custom environment variables"
+                command: echo 'export CI=true' >> $BASH_ENV
             - run: npm install
             - run: npm start &
             - run: cd client && npm install
