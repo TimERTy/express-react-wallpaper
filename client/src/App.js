@@ -43,6 +43,7 @@ class App extends React.Component {
 
     getChampion() {
         //League of Legends Api
+        //
         //  This function uses lol dev api to figure out the last played champion played by the user
         //  The User will input thier IGN (in game name) which will then trigger an api search
         this.getAccountId();
