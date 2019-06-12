@@ -4,7 +4,7 @@ const axios = require("axios");
 
 const app = express();
 
-const api_key = "RGAPI-7840d3d5-1ad6-4241-a276-37df55d0ee0b";
+const api_key = "RGAPI-ed302f57-ea9d-4da8-8cbd-ae3182aa2f6e";
 let Champions = {
     1: "Annie",
     2: "Olaf",
@@ -14,7 +14,7 @@ let Champions = {
     6: "Urgot",
     7: "Leblanc",
     8: "Vladimir",
-    9: "FiddleSticks",
+    9: "Fiddlesticks",
     10: "Kayle",
     11: "MasterYi",
     12: "Alistar",
@@ -114,7 +114,10 @@ let Champions = {
     133: "Quinn",
     134: "Syndra",
     136: "AurelionSol",
+    141: "Kayn",
+    142: "Zoe",
     143: "Zyra",
+    145: "Kaisa",
     150: "Gnar",
     154: "Zac",
     157: "Yasuo",
@@ -139,7 +142,11 @@ let Champions = {
     421: "RekSai",
     427: "Ivern",
     429: "Kalista",
-    432: "Bard"
+    432: "Bard",
+    497: "Rakan",
+    498: "Xayah",
+    516: "Ornn",
+    555: "Pyke"
 };
 
 // Serve the static files from the React app
@@ -158,6 +165,7 @@ app.get("/api/accountId/:summonerName", (req, res) => {
         .get(url)
         .then(response => {
             res.jsonp({ accountId: response.data.accountId });
+            //console.log("Input:", req.params.summonerName, "Output:", response.data.accountId);
         })
         .catch(error => {
             console.log(error);
@@ -169,7 +177,6 @@ app.get("/api/accountId/:summonerName", (req, res) => {
 app.get("/api/matchHistory/:accountId", (req, res) => {
     //LOG
     console.log("JSONP Match History request");
-    console.log(req.params.accountId);
 
     var url = "https://oc1.api.riotgames.com/lol/match/v4/matchlists/by-account/" + req.params.accountId + "?api_key=" + api_key;
     console.log(url);
@@ -177,6 +184,7 @@ app.get("/api/matchHistory/:accountId", (req, res) => {
         .get(url)
         .then(response => {
             res.jsonp(response.data.matches);
+            //console.log("Input:", req.params.accountId, "Output:"); //, response.data.matches);
         })
         .catch(error => {
             console.log(error);
@@ -188,15 +196,32 @@ app.get("/api/matchHistory/:accountId", (req, res) => {
 app.get("/api/champName/:champNum", (req, res) => {
     //LOG
     console.log("JSONP Champion Name request");
-    console.log(req.params.champNum);
-    res.jsonp({ champName: Champions[req.params.champNum] });
+    console.log("Input:", req.params.champNum, "Output:", Champions[req.params.champNum]);
+    if (Champions[req.params.champNum]) res.jsonp({ champions: Champions });
+    else {
+        var url = "http://ddragon.leagueoflegends.com/cdn/8.19.1/data/en_US/champion.json";
+        console.log(url);
+        axios
+            .get(url)
+            .then(response => {
+                console.log(typeof response.data.data);
+                Object.keys(response.data.data).forEach(champion => {
+                    //console.log(response.data.data[champion].key + ": " + "'" + response.data.data[champion].id + "'");
+                    if (response.data.data[champion].key === req.params.champNum)
+                        res.jsonp({ champName: response.data.data[champion].id });
+                });
+            })
+            .catch(error => {
+                console.log(error);
+                console.log("You probably need to update your API Key");
+            });
+    }
 });
 
 //Return safe Match
 app.get("/api/match/:matchId", (req, res) => {
     //LOG
     console.log("JSONP Match request");
-    console.log(req.params.matchId);
 
     var url = "https://oc1.api.riotgames.com/lol/match/v4/matches/" + req.params.matchId + "?api_key=" + api_key;
     console.log(url);
@@ -204,6 +229,7 @@ app.get("/api/match/:matchId", (req, res) => {
         .get(url)
         .then(response => {
             res.jsonp(response.data);
+            //console.log("Input:", req.params.matchId, "Output:"); //, response.data);
         })
         .catch(error => {
             console.log(error);
