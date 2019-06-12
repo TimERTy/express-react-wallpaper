@@ -145,17 +145,10 @@ let Champions = {
 // Serve the static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-// An api endpoint that returns a short list of items
-app.get('/api/getList', (req, res) => {
-    var list = ['item1', 'item2', 'item3'];
-    res.json(list);
-    console.log('Sent list of items');
-});
-
 //Return safe Account ID
 app.get('/api/accountId/:summonerName', (req, res) => {
     //LOG
-    console.log('JSONP response');
+    console.log('JSONP AccountId Request');
     console.log(req.params.summonerName);
 
     var url =
@@ -176,7 +169,7 @@ app.get('/api/accountId/:summonerName', (req, res) => {
 //Return safe Match History
 app.get('/api/matchHistory/:accountId', (req, res) => {
     //LOG
-    console.log('JSONP response');
+    console.log('JSONP Match History request');
     console.log(req.params.accountId);
 
     var url = 'https://oc1.api.riotgames.com/lol/match/v4/matchlists/by-account/' + req.params.accountId + '?api_key=' + api_key;
@@ -195,18 +188,16 @@ app.get('/api/matchHistory/:accountId', (req, res) => {
 //Return safe Champion Name
 app.get('/api/champName/:champNum', (req, res) => {
     //LOG
-    console.log('JSONP response');
+    console.log('JSONP Champion Name request');
     console.log(req.params.champNum);
     res.jsonp({champName: Champions[req.params.champNum]});
 
     //var url = 'http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json';
-    //console.log(url);
     //axios
     //    .get(url)
     //    .then(response => {
     //        console.log(typeof response.data.data);
     //        Object.keys(response.data.data).forEach(champion => {
-    //            console.log(response.data.data[champion].key + ': ' + "'" + response.data.data[champion].id + "'");
     //            if (response.data.data[champion].key === req.params.champNum)
     //                res.jsonp({champName: response.data.data[champion].id});
     //        });
@@ -215,17 +206,6 @@ app.get('/api/champName/:champNum', (req, res) => {
     //        console.log(error);
     //        console.log('You probably need to update your API Key');
     //    });
-});
-
-//JSON Get Request
-app.get('/api/json', (req, res) => {
-    //LOG
-    console.log('JSON response');
-    console.log(req);
-    console.log(req.query);
-
-    //JSON Response
-    res.json(req);
 });
 
 // Handles any requests that don't match the ones above
