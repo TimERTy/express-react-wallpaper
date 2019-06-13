@@ -199,6 +199,7 @@ app.get("/api/champName/:champNum", (req, res) => {
     //LOG
     console.log("JSONP Champion Name request");
     //console.log("Input:", req.params.champNum, "Output:", Champions[req.params.champNum]);
+
     res.header("Access-Control-Allow-Origin", "*");
     if (Champions[req.params.champNum]) res.jsonp({ champions: Champions });
     else {
@@ -207,13 +208,8 @@ app.get("/api/champName/:champNum", (req, res) => {
         axios
             .get(url)
             .then(response => {
-                //res.header("Access-Control-Allow-Origin", "*");
                 console.log(typeof response.data.data);
-                Object.keys(response.data.data).forEach(champion => {
-                    //console.log(response.data.data[champion].key + ": " + "'" + response.data.data[champion].id + "'");
-                    if (response.data.data[champion].key === req.params.champNum)
-                        res.jsonp({ champName: response.data.data[champion].id });
-                });
+                res.jsonp({ champions: response.data.data });
             })
             .catch(error => {
                 console.log(error);
