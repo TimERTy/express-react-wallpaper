@@ -164,6 +164,7 @@ app.get("/api/accountId/:summonerName", (req, res) => {
     axios
         .get(url)
         .then(response => {
+            res.header("Access-Control-Allow-Origin", "*");
             res.jsonp({ accountId: response.data.accountId });
             //console.log("Input:", req.params.summonerName, "Output:", response.data.accountId);
         })
@@ -183,6 +184,7 @@ app.get("/api/matchHistory/:accountId", (req, res) => {
     axios
         .get(url)
         .then(response => {
+            res.header("Access-Control-Allow-Origin", "*");
             res.jsonp(response.data.matches);
             //console.log("Input:", req.params.accountId, "Output:"); //, response.data.matches);
         })
@@ -204,6 +206,7 @@ app.get("/api/champName/:champNum", (req, res) => {
         axios
             .get(url)
             .then(response => {
+                res.header("Access-Control-Allow-Origin", "*");
                 console.log(typeof response.data.data);
                 Object.keys(response.data.data).forEach(champion => {
                     //console.log(response.data.data[champion].key + ": " + "'" + response.data.data[champion].id + "'");
@@ -228,6 +231,7 @@ app.get("/api/match/:matchId", (req, res) => {
     axios
         .get(url)
         .then(response => {
+            res.header("Access-Control-Allow-Origin", "*");
             res.jsonp(response.data);
             //console.log("Input:", req.params.matchId, "Output:"); //, response.data);
         })
@@ -242,7 +246,7 @@ app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 
-const port = process.env.PORT || 55555;
+const port = process.env.PORT || 5555;
 app.listen(port);
 
 console.log("App is listening on port " + port);
