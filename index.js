@@ -4,7 +4,7 @@ const axios = require('axios');
 
 const app = express();
 
-const api_key = 'RGAPI-63ee3e63-a70e-4918-9691-4be6624f9790';
+const api_key = 'RGAPI-56312ed9-9231-4607-83a4-1e4e20bb078f';
 let Champions = {
     1: 'Annie',
     2: 'Olaf',
