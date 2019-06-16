@@ -235,12 +235,13 @@ app.get("/api/match/:matchId", (req, res) => {
 });
 
 //Return a champion image
-app.get("/api/champSplash/:champName", (req, res) => {
+app.get("/api/champTile/:champName", (req, res) => {
     //LOG
-    console.log("JSONP Champion Splash Art Request");
+    console.log("JSONP Champion Tile Art Request");
     console.log(req.params.champName);
 
-    app.sendFile("./img/champion/tiles/" + req.params.champName + "_0.jpg");
+    res.header("Access-Control-Allow-Origin", "*");
+    res.sendFile("./img/champion/tiles/" + req.params.champName + "_0.jpg");
 });
 
 // Handles any requests that don't match the ones above
