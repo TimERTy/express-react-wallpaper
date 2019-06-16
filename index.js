@@ -166,7 +166,6 @@ app.get("/api/accountId/:summonerName", (req, res) => {
         .then(response => {
             res.header("Access-Control-Allow-Origin", "*");
             res.jsonp({ accountId: response.data.accountId, name: response.data.name });
-            //console.log("Input:", req.params.summonerName, "Output:", response.data.accountId);
         })
         .catch(error => {
             console.log(error);
@@ -186,7 +185,6 @@ app.get("/api/matchHistory/:accountId", (req, res) => {
         .then(response => {
             res.header("Access-Control-Allow-Origin", "*");
             res.jsonp(response.data.matches);
-            //console.log("Input:", req.params.accountId, "Output:"); //, response.data.matches);
         })
         .catch(error => {
             console.log(error);
@@ -198,7 +196,6 @@ app.get("/api/matchHistory/:accountId", (req, res) => {
 app.get("/api/champName/:champNum", (req, res) => {
     //LOG
     console.log("JSONP Champion Name request");
-    //console.log("Input:", req.params.champNum, "Output:", Champions[req.params.champNum]);
 
     res.header("Access-Control-Allow-Origin", "*");
     if (Champions[req.params.champNum]) res.jsonp({ champions: Champions });
@@ -230,12 +227,20 @@ app.get("/api/match/:matchId", (req, res) => {
         .then(response => {
             res.header("Access-Control-Allow-Origin", "*");
             res.jsonp(response.data);
-            //console.log("Input:", req.params.matchId, "Output:"); //, response.data);
         })
         .catch(error => {
             console.log(error);
             console.log("You probably need to update your API Key");
         });
+});
+
+//Return a champion image
+app.get("/api/champSplash/:champName", (req, res) => {
+    //LOG
+    console.log("JSONP Champion Splash Art Request");
+    console.log(req.params.champName);
+
+    app.sendFile("./img/champion/tiles/" + req.params.champName + "_0.jpg");
 });
 
 // Handles any requests that don't match the ones above
