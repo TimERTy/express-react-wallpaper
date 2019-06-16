@@ -241,7 +241,7 @@ app.get("/api/champTile/:champName", (req, res) => {
     console.log(req.params.champName);
 
     res.header("Access-Control-Allow-Origin", "*");
-    res.sendFile("./img/champion/tiles/" + req.params.champName + "_0.jpg");
+    res.sendFile(__dirname + "/img/champion/tiles/" + req.params.champName + "_0.jpg");
 });
 
 // Handles any requests that don't match the ones above
